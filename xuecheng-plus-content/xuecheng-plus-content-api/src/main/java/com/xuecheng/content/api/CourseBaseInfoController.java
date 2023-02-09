@@ -5,10 +5,13 @@ package com.xuecheng.content.api;/**
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.model.dto.QueryCourseParamsDto;
 import com.xuecheng.model.po.CourseBase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CourseBaseInfoController {
 
+    @Autowired
+    private CourseBaseInfoService courseBaseInfoService;
+
     /**
   pageParams分页参数通过url的key/value传入，
   queryCourseParams通过json数据传入，使用
@@ -31,7 +37,9 @@ public class CourseBaseInfoController {
      */
     @ApiOperation(value = "课程查询接口")
     @PostMapping("/course/list")
-    public PageResult<CourseBase> list(PageParams pageParams, @RequestBody QueryCourseParamsDto queryCourseParamsDto){
-        return null;
+    public PageResult<CourseBase> list(@ApiParam(value = "pageParams",name = "分页参数") PageParams pageParams, @ApiParam(value = "queryCourseParamsDto",name = "查询条件")@RequestBody QueryCourseParamsDto queryCourseParamsDto){
+
+        PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(pageParams, queryCourseParamsDto);
+        return courseBasePageResult;
     }
 }
